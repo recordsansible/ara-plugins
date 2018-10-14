@@ -80,6 +80,15 @@ options:
     ini:
       - section: ara
         key: ignored_facts
+  ignored_parameters:
+    description: List of Ansible parameters that will not be saved by ARA
+    type: list
+    default: ["extra_vars"]
+    env:
+      - name: ARA_IGNORED_PARAMETERS
+    ini:
+      - section: ara
+        key: ignored_parameters
 """
 
 
@@ -112,6 +121,7 @@ class CallbackModule(CallbackBase):
         super(CallbackModule, self).set_options(task_keys=task_keys, var_options=var_options, direct=direct)
 
         self.ignored_facts = self.get_option("ignored_facts")
+        self.ignored_parameters = self.get_option("ignored_parameters")
 
         api_client = self.get_option("api_client")
         if api_client == "offline":
@@ -131,6 +141,12 @@ class CallbackModule(CallbackBase):
             parameters = self._options.__dict__.copy()
         else:
             parameters = {}
+
+        # Potentially sanitize some user-specified keys
+        for parameter in self.ignored_parameters:
+            if parameter in parameters:
+                self.log.debug("Ignoring parameter: %s" % parameter)
+                parameters[parameter] = "Not saved by ARA as configured by 'ignored_parameters'"
 
         # Create the playbook
         self.playbook = self.client.post(
