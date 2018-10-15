@@ -320,6 +320,7 @@ class CallbackModule(CallbackBase):
             skipped=result._result.get("skipped", False),
             unreachable=result._result.get("unreachable", False),
             ignore_errors=kwargs.get("ignore_errors", False),
+            playbook=self.playbook["id"],
         )
 
         if self.task["action"] == "setup" and "ansible_facts" in results:
