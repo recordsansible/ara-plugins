@@ -1,0 +1,8 @@
+Code-Review+2: David Moreau Simard <dmsimard@redhat.com>
+Workflow+1: David Moreau Simard <dmsimard@redhat.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Mon, 14 Jan 2019 15:49:42 +0000
+Reviewed-on: https://review.openstack.org/629927
+Project: openstack/ara-plugins
+Branch: refs/heads/master
